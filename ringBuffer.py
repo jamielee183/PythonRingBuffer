@@ -8,8 +8,10 @@ class RingBuffer:
         self._data = np.zeros(self.bufferLength)
         self.pointer = 0
         self.fullFlag = False
-        self.get = lambda : self.getFull() if  self.fullFlag else self.getNotFull()
+        self.get = lambda : self.getFull() if  self.fullFlag else np.roll(self.getNotFull(),self.bufferLength-self.pointer)
         self.append = lambda x : self.appendFull(x) if self.fullFlag else self.appendNotFull(x)
+
+        
 
     def appendNotFull(self, sample):
         # add an element at the pointer location in the buffer
@@ -40,23 +42,23 @@ class RingBuffer:
 # sample usage
 if __name__=='__main__':
     x=RingBuffer(5)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(1)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(2)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(3)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(4)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(5)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(6)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(7)
     x.append(8)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
     x.append(9)
     x.append(10)
     x.append(11)
-    print(x.data, x.get())
+    print(x.data, x.get(), np.flip(x.get(),0))
