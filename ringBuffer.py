@@ -1,31 +1,21 @@
 import numpy as np
 
 
+
+
+
 class RingBuffer:
 
     def __init__(self, bufferLength):
         self.bufferLength = bufferLength
         self._data = np.zeros(self.bufferLength)
         self.pointer = 0
-        self.fullFlag = False
-        
         self.getNotFull = lambda : self._data
-        self.getFull = lambda : np.append(self._data[self.pointer:], self._data[:self.pointer])
-        self.getBuff = lambda : self.getFull() if  self.fullFlag else np.roll(self.getNotFull(),self.bufferLength-self.pointer)
-
+        self.getBuff = lambda : np.append(self._data[self.pointer:], self._data[:self.pointer])
         self.get = lambda : np.flip(self.getBuff(),0)
-        self.append = lambda x : self.appendFull(x) if self.fullFlag else self.appendNotFull(x)
 
-    def appendNotFull(self, sample):
-        # add an element at the pointer location in the buffer
-        self._data[self.pointer] = sample
-        self.pointer += 1
-     
-        if self.pointer == self.bufferLength:
-            self.pointer = 0    
-            self.fullFlag = True    
 
-    def appendFull(self, sample):
+    def append(self, sample):
         # add an element overwriting the oldest one.
         self._data[self.pointer] = sample
         self.pointer = (self.pointer+1) % self.bufferLength
@@ -33,7 +23,6 @@ class RingBuffer:
     @property
     def data(self):
         return self._data
-
 
 # sample usage
 if __name__=='__main__':
