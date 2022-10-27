@@ -13,7 +13,7 @@ class RingBuffer:
     def append(self, sample):
         # add an element overwriting the oldest one.
         self._data[self.pointer] = sample
-        self.pointer = (self.pointer+1) % self.bufferLength
+        self.pointer = np.mod((self.pointer+1), self.bufferLength)
 
     @property
     def data(self):
