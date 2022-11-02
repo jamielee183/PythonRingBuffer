@@ -6,9 +6,6 @@ class RingBuffer:
         self.bufferLength = bufferLength
         self._data = np.zeros(self.bufferLength)
         self.pointer = 0
-        self.getBuff = lambda : np.concatenate((self._data[self.pointer:], self._data[:self.pointer]))
-        self.get = lambda : np.flipud(self.getBuff())
-
 
     def append(self, sample):
         # add an element overwriting the oldest one.
@@ -18,27 +15,40 @@ class RingBuffer:
     @property
     def data(self):
         return self._data
+    
+    @property
+    def getFlippedBuffer(slef):
+        return np.concatenate((self._data[self.pointer:], self._data[:self.pointer]))
+    
+    @property
+    def getBuffer(self):
+        return np.flipud(self.getFlippedBuffer)
+    
+    def clear(self):
+        self._data = np.zeros(self.bufferLength)
+        self.pointer = 0
+        
 
 # sample usage
 if __name__=='__main__':
     x=RingBuffer(5)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(1)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(2)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(3)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(4)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(5)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(6)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(7)
     x.append(8)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
     x.append(9)
     x.append(10)
     x.append(11)
-    print(x.data, x.getBuff(), x.get())
+    print(x.data, x.getBuffer)
